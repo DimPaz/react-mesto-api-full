@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -21,6 +22,7 @@ const regExp = /https?:\/\/(\w+.){2,5}/;
 app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger); // подключаем логгер запросов
+app.use(cors);
 
 app.post(
   '/signin',

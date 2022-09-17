@@ -1,11 +1,11 @@
 // const url = "https://auth.nomoreparties.co";
-const url = "http://localhost:3000";
+const url = 'http://localhost:3000';
 
 class Auth {
   constructor(url) {
     this._url = url;
     this._headers = {
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
       Authorization: this._token,
     };
   }
@@ -13,9 +13,9 @@ class Auth {
   // запрос на регистрацию
   register(email, password) {
     return fetch(`${this._url}/signup`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, password }),
     })
@@ -30,10 +30,11 @@ class Auth {
   // запрос на авторизацию
   authorize(email, password) {
     return fetch(`${this._url}/signin`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({
         email,
         password,
@@ -48,11 +49,12 @@ class Auth {
   // проверка токена
   getContent(token) {
     return fetch(`${this._url}/users/me`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
+      credentials: 'include',
     })
       .then((res) => {
         return res.json();

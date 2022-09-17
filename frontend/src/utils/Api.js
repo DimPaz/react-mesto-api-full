@@ -1,6 +1,6 @@
 // const url = "https://mesto.nomoreparties.co/v1/cohort-43";
 // const token = "6f79ceb2-8103-4527-9a78-1a1299add319";
-const url = 'http://localhost:3000/';
+const url = 'http://localhost:3000';
 const token = '6f79ceb2-8103-4527-9a78-1a1299add319';
 
 class Api {
@@ -29,6 +29,7 @@ class Api {
     return fetch(`${this._url}/users/me/`, {
       method: 'GET',
       headers: this._headers,
+      credentials: 'include',
     }).then(this._checkResponse);
   }
 
@@ -37,6 +38,7 @@ class Api {
     return fetch(`${this._url}/users/me/`, {
       method: 'PATCH',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         name,
         about,
@@ -49,6 +51,7 @@ class Api {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         avatar,
       }),
@@ -60,6 +63,7 @@ class Api {
     return fetch(`${this._url}/cards/`, {
       method: 'GET',
       headers: this._headers,
+      credentials: 'include',
     }).then(this._checkResponse);
   }
 
@@ -73,6 +77,7 @@ class Api {
       method: 'POST',
       body: JSON.stringify(newCard),
       headers: this._headers,
+      credentials: 'include',
     }).then(this._checkResponse);
   }
 
@@ -81,6 +86,7 @@ class Api {
     return fetch(`${this._url}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this._headers,
+      credentials: 'include',
     }).then(this._checkResponse);
   }
 
@@ -89,6 +95,7 @@ class Api {
     return fetch(`${this._url}/cards/${likeId}/likes`, {
       method: 'PUT',
       headers: this._headers,
+      credentials: 'include',
     }).then(this._checkResponse);
   }
 
@@ -97,6 +104,7 @@ class Api {
     return fetch(`${this._url}/cards/${likeId}/likes`, {
       method: 'DELETE',
       headers: this._headers,
+      credentials: 'include',
     }).then(this._checkResponse);
   }
 }
