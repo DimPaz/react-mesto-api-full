@@ -1,0 +1,30 @@
+.profile__add-btn {
+  width: 150px;
+  height: 50px;
+  background-image: url(../../../images/profile/vector.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: 2px solid #fff;
+  box-sizing: border-box;
+  border-radius: 2px;
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 934px) {
+  .profile__add-btn {
+    background-image: url(../../../images/profile/vector_small.svg);
+    width: 100%;
+    max-width: 282px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin: 32px auto 0;
+  }
+}
+@media screen and (max-width: 675px) {
+  .profile__add-btn {
+    grid-column-end: 2;
+  }
+}

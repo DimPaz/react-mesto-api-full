@@ -1,0 +1,7 @@
+.popup__card-image {
+  max-width: 75vw;
+  min-width: 20vw;
+  max-height: 75vh;
+  min-height: 20vw;
+  object-fit: contain;
+}

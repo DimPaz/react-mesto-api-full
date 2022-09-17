@@ -1,0 +1,29 @@
+.profile__avatar-btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 120px;
+  height: 120px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  box-sizing: border-box;
+  border: 0px;
+  border-radius: 50%;
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+}
+.profile__avatar-btn:hover {
+  background-image: url(../../../images/profile/update.svg);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+@media screen and (max-width: 675px) {
+  .profile__avatar-btn {
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+}

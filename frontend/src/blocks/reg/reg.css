@@ -1,0 +1,8 @@
+.reg {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 358px;
+  margin: auto;
+}
