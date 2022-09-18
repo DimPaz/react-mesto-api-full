@@ -28,23 +28,43 @@ class Auth {
   }
 
   // запрос на авторизацию
+
   authorize(email, password) {
     return fetch(`${this._url}/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
       body: JSON.stringify({
         email,
         password,
       }),
+      credentials: 'include',
     })
       .then((res) => {
-        return res.json();
-      })
-      .catch((err) => console.log(err));
+        if (!res.ok) {
+          return Promise.reject(`Error: ${res.status}`);
+        }
+        return res.json()}
+      )
   }
+  // authorize(email, password) {
+  //   return fetch(`${this._url}/signin`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       email,
+  //       password,
+  //     }),
+  //     credentials: 'include',
+  //   })
+  //     .then((res) => {
+  //       return res.json();
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
 
   // проверка токена
   getContent(token) {
@@ -53,16 +73,16 @@ class Auth {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-      },
-      credentials: 'include',
+      }
     })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((err) => console.log(err));
+    .then((res) => {
+      if (!res.ok) {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+      return res.json()}
+    )
   }
 }
-
 const auth = new Auth(url);
 
 export default auth;
