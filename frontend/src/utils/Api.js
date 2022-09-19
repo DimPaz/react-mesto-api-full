@@ -1,14 +1,12 @@
-// const url = "https://mesto.nomoreparties.co/v1/cohort-43";
-// const token = "6f79ceb2-8103-4527-9a78-1a1299add319";
-const url = 'http://localhost:3000';
-const token = '6f79ceb2-8103-4527-9a78-1a1299add319';
+const url = "https://mesto.nomoreparties.co/v1/cohort-43";
+const token = "6f79ceb2-8103-4527-9a78-1a1299add319";
 
 class Api {
   constructor(url, token) {
     this._url = url;
     this._token = token;
     this._headers = {
-      'Content-type': 'application/json',
+      "Content-type": "application/json",
       Authorization: this._token,
     };
   }
@@ -17,7 +15,7 @@ class Api {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject('Возникла ошибка');
+    return Promise.reject("Возникла ошибка");
   }
 
   getAllData() {
@@ -27,18 +25,16 @@ class Api {
   // данные пользователя имя проф и аватар
   getUser() {
     return fetch(`${this._url}/users/me/`, {
-      method: 'GET',
+      method: "GET",
       headers: this._headers,
-      credentials: 'include',
     }).then(this._checkResponse);
   }
 
   //запрос патч для замены имя и проф
   addUserInfo(name, about) {
     return fetch(`${this._url}/users/me/`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: this._headers,
-      credentials: 'include',
       body: JSON.stringify({
         name,
         about,
@@ -49,9 +45,8 @@ class Api {
   //запрос патч для замены аватара
   addAvatar(avatar) {
     return fetch(`${this._url}/users/me/avatar`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: this._headers,
-      credentials: 'include',
       body: JSON.stringify({
         avatar,
       }),
@@ -61,9 +56,8 @@ class Api {
   // данные карточки
   getCards() {
     return fetch(`${this._url}/cards/`, {
-      method: 'GET',
+      method: "GET",
       headers: this._headers,
-      credentials: 'include',
     }).then(this._checkResponse);
   }
 
@@ -74,37 +68,33 @@ class Api {
       link: link,
     };
     return fetch(`${this._url}/cards/`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(newCard),
       headers: this._headers,
-      credentials: 'include',
     }).then(this._checkResponse);
   }
 
   //запрос делит для создания карточки
   deleteCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: this._headers,
-      credentials: 'include',
     }).then(this._checkResponse);
   }
 
   //отправить PUT-запрос лайка
   addLike(likeId) {
     return fetch(`${this._url}/cards/${likeId}/likes`, {
-      method: 'PUT',
+      method: "PUT",
       headers: this._headers,
-      credentials: 'include',
     }).then(this._checkResponse);
   }
 
   //отправить DELETE-запрос лайка
   deleteLike(likeId) {
     return fetch(`${this._url}/cards/${likeId}/likes`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: this._headers,
-      credentials: 'include',
     }).then(this._checkResponse);
   }
 }

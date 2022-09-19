@@ -1,3 +1,4 @@
+const { NODE_ENV, JWT_SECRET } = process.env;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -42,6 +43,7 @@ const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
+
   bcrypt.hash(password, 10).then((heshedPassword) => {
     User.create({
       name,
@@ -71,6 +73,7 @@ const createUser = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
+
   User.findOne({ email })
     .select('+password')
     .orFail(() => new UnauthorizedError('Неправильно введен логин или пароль'))
@@ -79,17 +82,12 @@ const login = (req, res, next) => {
         .compare(password, user.password)
         .then((isUserValid) => {
           if (isUserValid) {
-            const token = jwt.sign({ _id: user._id }, 'SECRET', {
-              expiresIn: '7d',
-            });
-
-            res.cookie('jwt', token, {
-              maxAge: 604800,
-              httpOnly: true,
-              sameSite: true,
-            });
-
-            res.send({ data: user.toJSON() });
+            const token = jwt.sign(
+              { _id: user._id },
+              `${NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'}`,
+              { expiresIn: '7d' },
+            );
+            res.send({ token });
           } else {
             next(new UnauthorizedError('Неправильно введен логин или пароль'));
           }
@@ -98,6 +96,37 @@ const login = (req, res, next) => {
     })
     .catch(next);
 };
+
+// const login = (req, res, next) => {
+//   const { email, password } = req.body;
+
+//   User.findOne({ email })
+//     .select("+password")
+//     .orFail(() => new UnauthorizedError("Неправильно введен логин или пароль"))
+//     .then((user) => {
+//       bcrypt
+//         .compare(password, user.password)
+//         .then((isUserValid) => {
+//           if (isUserValid) {
+//             const token = jwt.sign({ _id: user._id }, "SECRET", {
+//               expiresIn: "7d",
+//             });
+
+//             res.cookie("jwt", token, {
+//               maxAge: 604800,
+//               httpOnly: true,
+//               sameSite: true,
+//             });
+
+//             res.send({ data: user.toJSON() });
+//           } else {
+//             next(new UnauthorizedError("Неправильно введен логин или пароль"));
+//           }
+//         })
+//         .catch(next);
+//     })
+//     .catch(next);
+// };
 
 const updateProfileUser = (req, res, next) => {
   const { name, about } = req.body;

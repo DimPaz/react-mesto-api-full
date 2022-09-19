@@ -6,7 +6,7 @@ function InfoTooltip({ isOpen, onClose, notify }) {
   }
 
   return (
-    <div className={`popup ${isOpen ? "popup_opened" : ""}`}>
+    <div className={`popup ${isOpen && "popup_opened"}`}>
       <div
         className="popup__container"
         onClick={(event) => closePopupOnOverlay(event)}

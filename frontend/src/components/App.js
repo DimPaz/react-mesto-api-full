@@ -1,28 +1,28 @@
-import { useState, useEffect } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import {
   CurrentUserContext,
   CardContext,
-} from '../contexts/CurrentUserContext';
+} from "../contexts/CurrentUserContext";
 
-import Header from './Header';
-import Main from './Main';
-import Footer from './Footer';
+import Header from "./Header";
+import Main from "./Main";
+import Footer from "./Footer";
 
-import Login from './Login';
-import Register from './Register';
-import ProtectedRoute from './ProtectedRoute';
-import InfoTooltip from './InfoTooltip';
+import Login from "./Login";
+import Register from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
 
-import EditProfilePopup from './EditProfilePopup';
-import EditAvatarPopup from './EditAvatarPopup';
-import AddPlacePopup from './AddPlacePopup';
-import ImagePopup from './ImagePopup';
-import api from '../utils/Api.js';
-import auth from '../utils/Auth';
+import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
+import ImagePopup from "./ImagePopup";
+import api from "../utils/Api.js";
+import auth from "../utils/Auth";
 
-import infoImgOk from '../images/element/union-ok.svg';
-import infoImgNo from '../images/element/union-no.svg';
+import infoImgOk from "../images/element/union-ok.svg";
+import infoImgNo from "../images/element/union-no.svg";
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -37,8 +37,7 @@ function App() {
   const [cards, setCards] = useState([]);
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
-  const [token, setToken] = useState('');
+  const [userEmail, setUserEmail] = useState("");
 
   const history = useHistory();
 
@@ -50,29 +49,33 @@ function App() {
     isInfoTooltipPopupOpen;
 
   useEffect(() => {
-    tokenCheck();
-    api
-      .getAllData()
-      .then(([data, user]) => {
-        setCurrentUser(user);
-        setCards(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [token]);
+    const token = localStorage.getItem("token");
+    if (token) {
+      tokenCheck(token);
+      // if(loggedIn){
+      api
+        .getAllData()
+        .then(([data, user]) => {
+          setCurrentUser(user);
+          setCards(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   //закрытие попапов на ESC
   useEffect(() => {
     function closeByEscape(evt) {
-      if (evt.key === 'Escape') {
+      if (evt.key === "Escape") {
         closeAllPopups();
       }
     }
     if (isOpen) {
-      document.addEventListener('keydown', closeByEscape);
+      document.addEventListener("keydown", closeByEscape);
       return () => {
-        document.removeEventListener('keydown', closeByEscape);
+        document.removeEventListener("keydown", closeByEscape);
       };
     }
   }, [isOpen]);
@@ -203,15 +206,15 @@ function App() {
         if (res) {
           setNotify({
             infoImg: infoImgOk,
-            infoText: 'Вы успешно зарегистрировались!',
+            infoText: "Вы успешно зарегистрировались!",
           });
-          history.push('/sing-in');
+          history.push("/sing-in");
         }
       })
       .catch(
         setNotify({
           infoImg: infoImgNo,
-          infoText: 'Что-то пошло не так! Попробуйте ещё раз.',
+          infoText: "Что-то пошло не так! Попробуйте ещё раз.",
         })
       )
       .finally(
@@ -226,80 +229,48 @@ function App() {
     auth
       .authorize(email, pass)
       .then((data) => {
-        console.log(data.data)
-        setCurrentUser(data.data);
-        setLoggedIn(true);
-        history.push('/');
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          setLoggedIn(true);
+          history.push("/");
+          console.log("авторизация");
+        }
       })
-      .catch((err) => {
-        console.log(err)
+      .catch(() => {
+        setNotify({
+          infoImg: infoImgNo,
+          infoText: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+        handleInfoTooltipClick();
       });
   }
-  // function handleLogin({ email, pass }) {
-  //   auth
-  //     .authorize(email, pass)
-  //     .then((data) => {
-  //       if (data.token) {
-  //         localStorage.setItem('token', data.token);
-  //         setLoggedIn(true);
-  //         history.push('/');
-  //       } else {
-  //         setNotify({
-  //           infoImg: infoImgNo,
-  //           infoText: 'Что-то пошло не так! Попробуйте ещё раз.',
-  //         });
-  //         handleInfoTooltipClick();
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
 
   // проверка токена
-  function tokenCheck() {
-    const token = localStorage.getItem('jwt');
-    console.log(token)
-    setToken(token) 
-      auth.getContent(token)
+  function tokenCheck(token) {
+    // const token = localStorage.getItem("token");
+    if (token) {
+      auth
+        .getContent(token)
         .then((res) => {
+          if (res) {
             const userData = {
-              email: res.email,
+              email: res.data.email,
             };
             setLoggedIn(true);
             setUserEmail(userData.email);
-            history.push('/');
-        },
-        (err) => {
-          console.log(err);
-        }
-      )
+            history.push("/");
+          } else {
+            history.push("/sign-in");
+          }
+        })
+        .catch((err) => console.log(err));
     }
-  
-  // function tokenCheck() {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     auth
-  //       .getContent(token)
-  //       .then((res) => {
-  //         if (res) {
-  //           const userData = {
-  //             email: res.data.email,
-  //           };
-  //           setLoggedIn(true);
-  //           setUserEmail(userData.email);
-  //           history.push("/");
-  //         } else {
-  //           history.push("/sign-in");
-  //         }
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }
+  }
 
   // выход из системы
   function handleSignOut() {
-    console.log('qwe');
-    localStorage.removeItem('token');
-    history.push('/sign-in');
+    localStorage.removeItem("token");
+    history.push("/sign-in");
   }
 
   return (

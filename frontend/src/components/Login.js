@@ -2,7 +2,7 @@
 import { useForm } from "../hooks/useForm";
 
 function Login({ onLogin }) {
-  const { values, handleChange } = useForm({});
+  const { values, handleChange, setValues } = useForm({});
 
   function handleSubmit(e) {
     e.preventDefault();

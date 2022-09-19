@@ -1,88 +1,58 @@
-// const url = "https://auth.nomoreparties.co";
-const url = 'http://localhost:3000';
+const url = "https://auth.nomoreparties.co";
 
 class Auth {
   constructor(url) {
     this._url = url;
     this._headers = {
-      'Content-type': 'application/json',
+      "Content-type": "application/json",
       Authorization: this._token,
     };
+  }
+
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject("Возникла ошибка");
   }
 
   // запрос на регистрацию
   register(email, password) {
     return fetch(`${this._url}/signup`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .catch((err) => console.log(err));
+    }).then(this._checkResponse);
   }
 
   // запрос на авторизацию
-
   authorize(email, password) {
     return fetch(`${this._url}/signin`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email,
         password,
       }),
-      credentials: 'include',
-    })
-      .then((res) => {
-        if (!res.ok) {
-          return Promise.reject(`Error: ${res.status}`);
-        }
-        return res.json()}
-      )
+    }).then(this._checkResponse);
   }
-  // authorize(email, password) {
-  //   return fetch(`${this._url}/signin`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       email,
-  //       password,
-  //     }),
-  //     credentials: 'include',
-  //   })
-  //     .then((res) => {
-  //       return res.json();
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
 
   // проверка токена
   getContent(token) {
     return fetch(`${this._url}/users/me`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-      }
-    })
-    .then((res) => {
-      if (!res.ok) {
-        return Promise.reject(`Error: ${res.status}`);
-      }
-      return res.json()}
-    )
+      },
+    }).then(this._checkResponse);
   }
 }
+
 const auth = new Auth(url);
 
 export default auth;

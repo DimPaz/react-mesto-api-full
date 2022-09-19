@@ -1,8 +1,5 @@
 // Массив доменов, с которых разрешены кросс-доменные запросы
-const allowedCors = [
-  'http://localhost:3000',
-  'http://localhost:3001',
-];
+const allowedCors = ['http://localhost:3000', 'http://localhost:3001'];
 
 const cors = (req, res, next) => {
   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
@@ -17,8 +14,11 @@ const cors = (req, res, next) => {
   if (allowedCors.includes(origin)) {
     // устанавливаем заголовок, который разрешает браузеру запросы с этого источника
     res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Credentials', true);
+    // res.header('Access-Control-Allow-Credentials', true);
   }
+
+  // устанавливаем заголовок, который разрешает браузеру запросы из любого источника
+  res.header('Access-Control-Allow-Origin', '*');
 
   if (method === 'OPTIONS') {
     // разрешаем кросс-доменные запросы любых типов (по умолчанию)

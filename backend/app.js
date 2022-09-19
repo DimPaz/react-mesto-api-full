@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -14,6 +13,8 @@ const { userRouter } = require('./routes/users');
 const { cardsRouter } = require('./routes/cards');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 
 const PageNotFoundError = require('./errors/PageNotFoundError'); // 404
 
@@ -21,8 +22,9 @@ const regExp = /https?:\/\/(\w+.){2,5}/;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(requestLogger); // подключаем логгер запросов
 app.use(cors);
+
+app.use(requestLogger); // подключаем логгер запросов
 
 app.post(
   '/signin',
@@ -34,6 +36,7 @@ app.post(
   }),
   login,
 );
+
 app.post(
   '/signup',
   celebrate({
@@ -56,6 +59,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use(errorLogger); // подключаем логгер ошибок
+
 // обработчики ошибок
 app.use(errors()); // обработчик ошибок celebrate
 app.use(errorHandler); // мидлвера обработчика ошибок
