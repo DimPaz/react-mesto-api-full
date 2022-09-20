@@ -1,6 +1,6 @@
 const { NODE_ENV, JWT_SECRET } = process.env;
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); // импортируем модуль jsonwebtoken
 const User = require('../models/user');
 
 const BadRequestError = require('../errors/BadRequestError'); // 400
@@ -74,27 +74,21 @@ const createUser = (req, res, next) => {
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
-  User.findOne({ email })
-    .select('+password')
-    .orFail(() => new UnauthorizedError('Неправильно введен логин или пароль'))
+  return User.findUserByCredentials(email, password)
     .then((user) => {
-      bcrypt
-        .compare(password, user.password)
-        .then((isUserValid) => {
-          if (isUserValid) {
-            const token = jwt.sign(
-              { _id: user._id },
-              `${NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'}`,
-              { expiresIn: '7d' },
-            );
-            res.send({ token });
-          } else {
-            next(new UnauthorizedError('Неправильно введен логин или пароль'));
-          }
-        })
-        .catch(next);
+      // аутентификация успешна! пользователь в переменной user
+      // создадим токен
+      const token = jwt.sign(
+        { _id: user._id },
+        `${NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'}`,
+        { expiresIn: '7d' },
+      );
+      res.send({ token });
     })
-    .catch(next);
+    .catch(() => {
+      // ошибка аутентификации
+      next(new UnauthorizedError('Неправильно введен логин или пароль'));
+    });
 };
 
 // const login = (req, res, next) => {
