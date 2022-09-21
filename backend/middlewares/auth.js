@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../errors/UnauthorizedError'); // 401
 
 const { NODE_ENV, JWT_SECRET } = process.env;
+
 // console.log(require('crypto').randomBytes(32).toString('hex'));
 
 // const auth = (req, res, next) => {
@@ -17,11 +18,9 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 //   return next();
 // };
 
-console.log('логин');
 module.exports = (req, res, next) => {
   // достаём авторизационный заголовок
   const { authorization } = req.headers;
-
   // убеждаемся, что он есть или начинается с Bearer
   if (!authorization || !authorization.startsWith('Bearer ')) {
     throw new UnauthorizedError('Нужно авторизовать пользователя');

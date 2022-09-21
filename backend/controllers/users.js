@@ -1,7 +1,8 @@
-const { NODE_ENV, JWT_SECRET } = process.env;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // импортируем модуль jsonwebtoken
 const User = require('../models/user');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const BadRequestError = require('../errors/BadRequestError'); // 400
 const UnauthorizedError = require('../errors/UnauthorizedError'); // 401
@@ -44,16 +45,21 @@ const createUser = (req, res, next) => {
     name, about, avatar, email, password,
   } = req.body;
 
-  bcrypt.hash(password, 10).then((heshedPassword) => {
+  bcrypt.hash(password, 10).then((hash) => {
     User.create({
       name,
       about,
       avatar,
       email,
-      password: heshedPassword,
+      password: hash,
     })
-      .then((user) => {
-        res.send({ user });
+      .then(() => {
+        res.send({
+          name,
+          about,
+          avatar,
+          email,
+        });
       })
       .catch((err) => {
         if (err.name === 'ValidationError') {

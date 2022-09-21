@@ -26,7 +26,7 @@ class Auth {
       body: JSON.stringify({ email, password }),
     }).then(this._checkResponse);
   }
-
+ 
   // запрос на авторизацию
   authorize(email, password) {
     return fetch(`${this._url}/signin`, {
