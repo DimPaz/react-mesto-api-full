@@ -1,13 +1,15 @@
-const url = "https://mesto.nomoreparties.co/v1/cohort-43";
-const token = "6f79ceb2-8103-4527-9a78-1a1299add319";
-
+const url = "http://localhost:3001";
+// const url = "https://mesto.nomoreparties.co/v1/cohort-43";
+// const token = "6f79ceb2-8103-4527-9a78-1a1299add319";
+const token = localStorage.getItem('token');
+// console.log(token)
 class Api {
   constructor(url, token) {
     this._url = url;
     this._token = token;
     this._headers = {
       "Content-type": "application/json",
-      Authorization: this._token,
+      Authorization: `Bearer ${this._token}`,
     };
   }
 
