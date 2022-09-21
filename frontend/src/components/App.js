@@ -56,6 +56,7 @@ function App() {
       api
         .getAllData()
         .then(([data, user]) => {
+          // console.log(user)
           setCurrentUser(user);
           setCards(data);
         })
@@ -253,11 +254,9 @@ function App() {
         .getContent(token)
         .then((res) => {
           if (res) {
-            const userData = {
-              email: res.data.email,
-            };
+            // console.log('email', res.email)
             setLoggedIn(true);
-            setUserEmail(userData.email);
+            setUserEmail(res.email);
             history.push("/");
           } else {
             history.push("/sign-in");

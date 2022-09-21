@@ -6,7 +6,9 @@ const PageNotFoundError = require('../errors/PageNotFoundError'); // 404
 
 const getCard = (req, res, next) => {
   Card.find({})
-    .then((cards) => res.status(200).send(cards))
+    .then((cards) => {
+      res.status(200).send(cards);
+    })
     .catch(next);
 };
 
