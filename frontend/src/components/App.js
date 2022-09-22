@@ -1,28 +1,28 @@
-import { useState, useEffect } from "react";
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import {
   CurrentUserContext,
   CardContext,
-} from "../contexts/CurrentUserContext";
+} from '../contexts/CurrentUserContext';
 
-import Header from "./Header";
-import Main from "./Main";
-import Footer from "./Footer";
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
 
-import Login from "./Login";
-import Register from "./Register";
-import ProtectedRoute from "./ProtectedRoute";
-import InfoTooltip from "./InfoTooltip";
+import Login from './Login';
+import Register from './Register';
+import ProtectedRoute from './ProtectedRoute';
+import InfoTooltip from './InfoTooltip';
 
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
-import AddPlacePopup from "./AddPlacePopup";
-import ImagePopup from "./ImagePopup";
-import api from "../utils/Api.js";
-import auth from "../utils/Auth";
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
+import ImagePopup from './ImagePopup';
+import api from '../utils/Api.js';
+import auth from '../utils/Auth';
 
-import infoImgOk from "../images/element/union-ok.svg";
-import infoImgNo from "../images/element/union-no.svg";
+import infoImgOk from '../images/element/union-ok.svg';
+import infoImgNo from '../images/element/union-no.svg';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -37,7 +37,7 @@ function App() {
   const [cards, setCards] = useState([]);
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
+  const [userEmail, setUserEmail] = useState('');
 
   const history = useHistory();
 
@@ -49,7 +49,7 @@ function App() {
     isInfoTooltipPopupOpen;
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       tokenCheck(token);
       // if(loggedIn){
@@ -69,14 +69,14 @@ function App() {
   //закрытие попапов на ESC
   useEffect(() => {
     function closeByEscape(evt) {
-      if (evt.key === "Escape") {
+      if (evt.key === 'Escape') {
         closeAllPopups();
       }
     }
     if (isOpen) {
-      document.addEventListener("keydown", closeByEscape);
+      document.addEventListener('keydown', closeByEscape);
       return () => {
-        document.removeEventListener("keydown", closeByEscape);
+        document.removeEventListener('keydown', closeByEscape);
       };
     }
   }, [isOpen]);
@@ -93,8 +93,7 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
-
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     if (isLiked) {
       api
         .deleteLike(card._id)
@@ -207,15 +206,15 @@ function App() {
         if (res) {
           setNotify({
             infoImg: infoImgOk,
-            infoText: "Вы успешно зарегистрировались!",
+            infoText: 'Вы успешно зарегистрировались!',
           });
-          history.push("/sing-in");
+          history.push('/sing-in');
         }
       })
       .catch(
         setNotify({
           infoImg: infoImgNo,
-          infoText: "Что-то пошло не так! Попробуйте ещё раз.",
+          infoText: 'Что-то пошло не так! Попробуйте ещё раз.',
         })
       )
       .finally(
@@ -231,16 +230,16 @@ function App() {
       .authorize(email, pass)
       .then((data) => {
         if (data.token) {
-          localStorage.setItem("token", data.token);
+          localStorage.setItem('token', data.token);
           setLoggedIn(true);
-          history.push("/");
-          console.log("авторизация");
+          history.push('/');
+          console.log('авторизация');
         }
       })
       .catch(() => {
         setNotify({
           infoImg: infoImgNo,
-          infoText: "Что-то пошло не так! Попробуйте ещё раз.",
+          infoText: 'Что-то пошло не так! Попробуйте ещё раз.',
         });
         handleInfoTooltipClick();
       });
@@ -257,9 +256,9 @@ function App() {
             // console.log('email', res.email)
             setLoggedIn(true);
             setUserEmail(res.email);
-            history.push("/");
+            history.push('/');
           } else {
-            history.push("/sign-in");
+            history.push('/sign-in');
           }
         })
         .catch((err) => console.log(err));
@@ -268,8 +267,8 @@ function App() {
 
   // выход из системы
   function handleSignOut() {
-    localStorage.removeItem("token");
-    history.push("/sign-in");
+    localStorage.removeItem('token');
+    history.push('/sign-in');
   }
 
   return (

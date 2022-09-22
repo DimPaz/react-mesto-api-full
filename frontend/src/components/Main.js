@@ -15,7 +15,7 @@ function Main({
 }) {
   const currentUser = useContext(CurrentUserContext);
   const cards = useContext(CardContext);
-
+  
   return (
     <main className="main">
       <section className="profile">
@@ -44,7 +44,6 @@ function Main({
       </section>
       <section className="elements">
         {cards.map((item) => {
-          // console.log('card length', item.likes)
           return (
             <Card
               key={item._id}

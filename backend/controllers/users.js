@@ -146,7 +146,7 @@ const updateProfileUser = (req, res, next) => {
           new PageNotFoundError('Пользователь с указанным _id не найден'),
         );
       }
-      return res.send({ data: user });
+      return res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -177,7 +177,7 @@ const updateAvatarUser = (req, res, next) => {
           new PageNotFoundError('Пользователь с указанным _id не найден'),
         );
       }
-      return res.status(200).send({ data: user });
+      return res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {

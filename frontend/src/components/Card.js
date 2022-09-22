@@ -11,6 +11,7 @@ function Card({
   onCardClick,
 }) {
   const currentUser = useContext(CurrentUserContext);
+  // console.log(card);
   // отображение корзинки
   const isOwn = card.owner === currentUser._id;
   const cardDeleteButtonClassName = `element__trash ${
