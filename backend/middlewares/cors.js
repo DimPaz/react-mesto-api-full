@@ -1,5 +1,9 @@
 // Массив доменов, с которых разрешены кросс-доменные запросы
-const allowedCors = ['http://localhost:3001'];
+const allowedCors = [
+  'http://localhost:3001',
+  'http://dpazuxin.nomorepartiesxyz.ru',
+  'https://dpazuxin.nomorepartiesxyz.ru',
+];
 
 const cors = (req, res, next) => {
   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin

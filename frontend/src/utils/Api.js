@@ -1,4 +1,6 @@
-const url = 'http://localhost:3000';
+
+const url = 'http://api.dpazuxin.nomorepartiesxyz.ru';
+// const url = 'http://localhost:3000';
 // const url = "https://mesto.nomoreparties.co/v1/cohort-43";
 // const token = "6f79ceb2-8103-4527-9a78-1a1299add319";
 const token = localStorage.getItem('token');
