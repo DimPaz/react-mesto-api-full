@@ -8,7 +8,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 51.250.111.193
+IP 51.250.111.193
 
 Frontend http://dpazuxin.nomorepartiesxyz.ru
 
