@@ -45,36 +45,39 @@ const createUser = (req, res, next) => {
     name, about, avatar, email, password,
   } = req.body;
 
-  bcrypt.hash(password, 10).then((hash) => {
-    User.create({
-      name,
-      about,
-      avatar,
-      email,
-      password: hash,
-    })
-      .then(() => {
-        res.send({
-          name,
-          about,
-          avatar,
-          email,
-        });
+  bcrypt
+    .hash(password, 10)
+    .then((hash) => {
+      User.create({
+        name,
+        about,
+        avatar,
+        email,
+        password: hash,
       })
-      .catch((err) => {
-        if (err.name === 'ValidationError') {
-          return next(
-            new BadRequestError(
-              'Переданы некорректные данные при создании профиля',
-            ),
-          );
-        }
-        if (err.code === duplicateKey) {
-          return next(new ConflictError('Такой email уже существует'));
-        }
-        return next(err);
-      });
-  });
+        .then(() => {
+          res.send({
+            name,
+            about,
+            avatar,
+            email,
+          });
+        })
+        .catch((err) => {
+          if (err.name === 'ValidationError') {
+            return next(
+              new BadRequestError(
+                'Переданы некорректные данные при создании профиля',
+              ),
+            );
+          }
+          if (err.code === duplicateKey) {
+            return next(new ConflictError('Такой email уже существует'));
+          }
+          return next(err);
+        });
+    })
+    .catch(next);
 };
 
 const login = (req, res, next) => {

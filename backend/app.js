@@ -18,7 +18,7 @@ const cors = require('./middlewares/cors');
 
 const PageNotFoundError = require('./errors/PageNotFoundError'); // 404
 
-const regExp = /https?:\/\/(\w+.){2,5}/;
+const regExp = /^(https?:\/\/)?([\w\d-]+\.)*[\w-]+[\\.\\:]\w+([\\/\\?\\=\\&\\#\\.]?[\w-]+)*\/?$/;
 
 app.use(express.json());
 app.use(cookieParser());
@@ -37,7 +37,7 @@ app.post(
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
-      password: Joi.string().required().min(5),
+      password: Joi.string().required(),
     }),
   }),
   login,
@@ -51,7 +51,7 @@ app.post(
       about: Joi.string().min(2).max(30),
       avatar: Joi.string().pattern(regExp),
       email: Joi.string().required().email(),
-      password: Joi.string().required().min(5),
+      password: Joi.string().required(),
     }),
   }),
   createUser,

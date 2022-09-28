@@ -3,7 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 
 const cardsRouter = express.Router();
 
-const regExp = /https?:\/\/(\w+.){2,5}/;
+const regExp = /^(https?:\/\/)?([\w\d-]+\.)*[\w-]+[\\.\\:]\w+([\\/\\?\\=\\&\\#\\.]?[\w-]+)*\/?$/;
 
 // красивый способ я тоже постараяюсь сделать
 const allowedObjectKey = celebrate({

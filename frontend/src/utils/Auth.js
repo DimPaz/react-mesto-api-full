@@ -1,6 +1,5 @@
-const url = "https://api.dpazuxin.nomorepartiesxyz.ru";
-// const url = "http://localhost:3000";
-// const url = "https://auth.nomoreparties.co";
+// const url = "https://api.dpazuxin.nomorepartiesxyz.ru"; //serv
+const url = "http://localhost:3000"; //loc
 
 class Auth {
   constructor(url) {
