@@ -50,7 +50,6 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log(token)
     if (token) {
       tokenCheck(token);
       api
@@ -64,31 +63,7 @@ function App() {
         });
     }
   }, [loggedIn]);
-  //////////////////////////////////////////////////////
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   if (token) {
-  //     tokenCheck(token);
-  //     setLoggedIn(true);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (loggedIn) {
-  //     console.log('ДОбавЛЕНие', loggedIn)
-  //     api
-  //       .getAllData()
-  //       .then(([data, user]) => {
-  //         console.log(data);
-  //         setCurrentUser(user);
-  //         setCards(data);
-  //       })
-  //       .catch((err) => console.log('этот error', err));
-  //   }
-  // }, [loggedIn]);
-
-  ////////////////////////////////
   //закрытие попапов на ESC
   useEffect(() => {
     function closeByEscape(evt) {
@@ -270,13 +245,11 @@ function App() {
 
   // проверка токена
   function tokenCheck(token) {
-    // const token = localStorage.getItem("token");
     if (token) {
       auth
         .getContent(token)
         .then((res) => {
           if (res) {
-            // console.log('email', res.email)
             setLoggedIn(true);
             setUserEmail(res.email);
             history.push('/');
@@ -287,25 +260,6 @@ function App() {
         .catch((err) => console.log(err));
     }
   }
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     auth
-  //       .getContent(token)
-  //       .then((res) => {
-  //         if (res) {
-  //           setLoggedIn(true);
-  //           setUserEmail(res.email);
-  //           history.push('/');
-  //         } else {
-  //           history.push('/sign-in');
-  //         }
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, []);
-
 
   // выход из системы
   function handleSignOut() {

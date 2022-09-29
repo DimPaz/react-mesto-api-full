@@ -1,15 +1,9 @@
-// const url = 'https://api.dpazuxin.nomorepartiesxyz.ru'; //serv
-const url = 'http://localhost:3000'; //loc
-const token = localStorage.getItem('token');
-// console.log(token)
+const url = 'https://api.dpazuxin.nomorepartiesxyz.ru'; //serv
+// const url = 'http://localhost:3000'; //loc
+
 class Api {
-  constructor(url, token) {
+  constructor(url) {
     this._url = url;
-    this._token = token;
-    this._headers = {
-      'Content-type': 'application/json',
-      Authorization: `Bearer ${this._token}`,
-    };
   }
 
   _checkResponse(res) {
@@ -17,7 +11,14 @@ class Api {
       return res.json();
     }
     return Promise.reject(`Возникла ошибка ${res.status} ${res.statusText}`);
-    // return Promise.reject('Возникла ошибка');
+  }
+
+  _addHeader() {
+    const token = localStorage.getItem('token');
+    return {
+      'Content-type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
   }
 
   getAllData() {
@@ -28,7 +29,7 @@ class Api {
   getUser() {
     return fetch(`${this._url}/users/me/`, {
       method: 'GET',
-      headers: this._headers,
+      headers: this._addHeader(),
     }).then(this._checkResponse);
   }
 
@@ -36,7 +37,7 @@ class Api {
   addUserInfo(name, about) {
     return fetch(`${this._url}/users/me/`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: this._addHeader(),
       body: JSON.stringify({
         name,
         about,
@@ -48,7 +49,7 @@ class Api {
   addAvatar(avatar) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: this._addHeader(),
       body: JSON.stringify({
         avatar,
       }),
@@ -59,7 +60,7 @@ class Api {
   getCards() {
     return fetch(`${this._url}/cards/`, {
       method: 'GET',
-      headers: this._headers,
+      headers: this._addHeader(),
     }).then(this._checkResponse);
   }
 
@@ -72,7 +73,7 @@ class Api {
     return fetch(`${this._url}/cards/`, {
       method: 'POST',
       body: JSON.stringify(newCard),
-      headers: this._headers,
+      headers: this._addHeader(),
     }).then(this._checkResponse);
   }
 
@@ -80,7 +81,7 @@ class Api {
   deleteCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._headers,
+      headers: this._addHeader(),
     }).then(this._checkResponse);
   }
 
@@ -88,7 +89,7 @@ class Api {
   addLike(likeId) {
     return fetch(`${this._url}/cards/${likeId}/likes`, {
       method: 'PUT',
-      headers: this._headers,
+      headers: this._addHeader(),
     }).then(this._checkResponse);
   }
 
@@ -96,11 +97,11 @@ class Api {
   deleteLike(likeId) {
     return fetch(`${this._url}/cards/${likeId}/likes`, {
       method: 'DELETE',
-      headers: this._headers,
+      headers: this._addHeader(),
     }).then(this._checkResponse);
   }
 }
 
-const api = new Api(url, token);
+const api = new Api(url);
 
 export default api;

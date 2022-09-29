@@ -100,37 +100,6 @@ const login = (req, res, next) => {
     });
 };
 
-// const login = (req, res, next) => {
-//   const { email, password } = req.body;
-
-//   User.findOne({ email })
-//     .select("+password")
-//     .orFail(() => new UnauthorizedError("Неправильно введен логин или пароль"))
-//     .then((user) => {
-//       bcrypt
-//         .compare(password, user.password)
-//         .then((isUserValid) => {
-//           if (isUserValid) {
-//             const token = jwt.sign({ _id: user._id }, "SECRET", {
-//               expiresIn: "7d",
-//             });
-
-//             res.cookie("jwt", token, {
-//               maxAge: 604800,
-//               httpOnly: true,
-//               sameSite: true,
-//             });
-
-//             res.send({ data: user.toJSON() });
-//           } else {
-//             next(new UnauthorizedError("Неправильно введен логин или пароль"));
-//           }
-//         })
-//         .catch(next);
-//     })
-//     .catch(next);
-// };
-
 const updateProfileUser = (req, res, next) => {
   const { name, about } = req.body;
 

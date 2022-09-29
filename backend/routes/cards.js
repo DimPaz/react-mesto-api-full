@@ -5,7 +5,6 @@ const cardsRouter = express.Router();
 
 const regExp = /^(https?:\/\/)?([\w\d-]+\.)*[\w-]+[\\.\\:]\w+([\\/\\?\\=\\&\\#\\.]?[\w-]+)*\/?$/;
 
-// красивый способ я тоже постараяюсь сделать
 const allowedObjectKey = celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().alphanum().length(24).hex(),

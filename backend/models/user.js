@@ -36,12 +36,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// userSchema.methods.toJSON = function userPass() {
-//   const user = this.toObject();
-//   delete user.password;
-//   return user;
-// };
-
 // добавим метод findUserByCredentials схеме пользователя
 userSchema.statics.findUserByCredentials = function (email, password) {
   // попытаемся найти пользователя по почте

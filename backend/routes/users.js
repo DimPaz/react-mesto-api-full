@@ -1,7 +1,7 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
 
-const regExp = /https?:\/\/(\w+.){2,5}/;
+const regExp = /^(https?:\/\/)?([\w\d-]+\.)*[\w-]+[\\.\\:]\w+([\\/\\?\\=\\&\\#\\.]?[\w-]+)*\/?$/;
 
 const userRouter = express.Router();
 const {
